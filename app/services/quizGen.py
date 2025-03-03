@@ -63,8 +63,3 @@ class quizGen:
         except Exception as e:
             return str(e)
     
-
-if __name__ == '__main__':
-    quiz = quizGen()
-    quiz.topics = ['Maths', 'Science', 'History']
-    print(quiz.generatePracticeQuiz('undergraduate'))
