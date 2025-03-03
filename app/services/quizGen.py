@@ -14,7 +14,7 @@ class quizGen:
         prompt = f'''
             Generate a quiz based on the following topics:
             {self.topics}
-            and each questions shouls be generated with one of the following difficulties:
+            and each questions should be generated with one of the following difficulties:
             {self.difficulties}
             the format in which the questions should be generated is:[
             {{
@@ -28,6 +28,9 @@ class quizGen:
         '''
         response = self.model.generate_content(prompt)
         return json.loads(response)
+    
+    def generateTestQuiz(self, assignDifficult):
+        pass
     
 
 if __name__ == '__main__':
