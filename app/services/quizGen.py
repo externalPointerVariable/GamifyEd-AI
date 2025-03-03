@@ -1,10 +1,8 @@
+from app.utils.paths import addProjectRoot
+addProjectRoot()
 import vertexai
 from vertexai.preview.generative_models import GenerativeModel
 import json
-import os
-import sys
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
-
 from app.config.config import cloudProjectId, cloudProjectLocation
 
 class quizGen:
@@ -63,3 +61,6 @@ class quizGen:
         except Exception as e:
             return str(e)
     
+if __name__ == '__main__':
+    qg = quizGen()
+    print(qg.generatePracticeQuiz('Undergraduate'))
