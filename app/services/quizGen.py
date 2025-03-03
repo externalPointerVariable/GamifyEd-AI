@@ -29,7 +29,7 @@ class quizGen:
         response = self.model.generate_content(prompt)
         return json.loads(response)
     
-    def generateTestQuiz(self, assignDifficult):
+    def generateTestQuiz(self, assignDifficulty):
         pass
     
 
