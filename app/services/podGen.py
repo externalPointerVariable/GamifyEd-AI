@@ -1,3 +1,7 @@
+import os
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
+
 import vertexai
 from vertexai.preview.generative_models import GenerativeModel
 import json
@@ -10,14 +14,13 @@ class podGen:
         self.model = GenerativeModel('gemini-pro')
         self.genConfig = {
             "temperature": 0.8,
-            "min_length": 1900,
         }
 
     def generateContent(self):
         try:
             prompt = f'''
                     Generate a blog content on the topic: {self.topic}.
-                    The content should be at least 1900 characters long.
+                    The content should be at least 1900 words long.
                     format:[
                         'Main Heading',
                         'Sub Heading',
@@ -32,6 +35,13 @@ class podGen:
         
     def generatePodcast(self):
         try:
+            content = self.generateContent(self)
             pass
         except Exception as e:
             return str(e)
+        
+
+if __name__ == "__main__":
+    pod = podGen()
+    pod.topic = "Artificial Intelligence"
+    print(pod.generateContent())
