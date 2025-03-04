@@ -1,3 +1,13 @@
+import requests
+
 class auth:
     def __init__(self):
-        pass
+        self.userName = ""
+        self.userId = ""
+        self.userRole = ""
+    
+    def getUserStatus(self):
+        try:
+            pass
+        except Exception as e:
+            return f"Not able to authenticate the user {str(e)}"
