@@ -5,7 +5,8 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')
 import vertexai
 from vertexai.preview.generative_models import GenerativeModel
 import json
-from app.config.config import cloudProjectId, cloudProjectLocation
+from app.config.config import cloudProjectId, cloudProjectLocation, playnotesApiKey, playnotesUserId
+from app.utils.podrequests import getPodcastId
 
 class podGen:
     def __init__(self):
@@ -14,6 +15,19 @@ class podGen:
         self.model = GenerativeModel('gemini-pro')
         self.genConfig = {
             "temperature": 0.8,
+        }
+        self.header = {
+            'AUTHORIZATION': playnotesApiKey,
+            'X-USER-ID': playnotesUserId,
+            'accept': 'application/json'
+        }
+        self.data = {
+             'sourceFileUrl': "",
+             'synthesisStyle': (None, 'podcast'),
+             'voice1': (None, '	s3://voice-cloning-zero-shot/65977f5e-a22a-4b36-861b-ecede19bdd65/original/manifest.json'),
+             'voice1Name': (None, 'Arsenio'),
+             'voice2': (None, 's3://voice-cloning-zero-shot/831bd330-85c6-4333-b2b4-10c476ea3491/original/manifest.json'),
+             'voice2Name': (None, 'Nia'),
         }
 
     def generateContent(self):
@@ -35,8 +49,10 @@ class podGen:
         
     def generatePodcastContent(self):
         try:
-            content = self.generateContent(self)
-            pass
+            content = self.generateContent()
+            self.data['sourceFileUrl'] = (None, content)
+            audioUrl = getPodcastId(self.header, self.data)
+            return audioUrl
         except Exception as e:
             return str(e)
         
@@ -44,4 +60,4 @@ class podGen:
 if __name__ == "__main__":
     pod = podGen()
     pod.topic = "Artificial Intelligence"
-    print(pod.generateContent())
+    print(pod.generatePodcastContent())
