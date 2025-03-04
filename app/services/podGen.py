@@ -33,7 +33,7 @@ class podGen:
         except Exception as e:
             return str(e)
         
-    def generatePodcast(self):
+    def generatePodcastContent(self):
         try:
             content = self.generateContent(self)
             pass
