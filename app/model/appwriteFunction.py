@@ -3,29 +3,35 @@ import sys
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 
-import appwrite
+from appwrite.client import Client
+from appwrite.services.databases import Databases
+from appwrite.services.storage import Storage
+from appwrite.query import Query
+
+
+
 from app.config.config import (
     appwriteBucketId,
     appwriteCollectionId,
     appwriteDatabaseId,
     appwriteProjectId,
-    appwriteSecretKey
+    appwriteSecretKey,
 )
 
 class AppwriteFunction:
     def __init__(self):
-        self.client = appwrite.Client()
+        self.client = Client()
         self.client.set_endpoint("https://cloud.appwrite.io/v1")
         self.client.set_project(appwriteProjectId)
         self.client.set_key(appwriteSecretKey)  
-        self.databases = appwrite.Databases(self.client)
-        self.storage = appwrite.Storage(self.client)
+        self.databases = Databases(self.client)
+        self.storage = Storage(self.client)
 
     def getTopic(self, topicName):
         try:
             response = self.databases.list_documents(
                 appwriteDatabaseId, appwriteCollectionId, 
-                queries=[appwrite.Query.equal("name", topicName)]
+                queries=[Query.equal("name", topicName)]
             )
             return response.get("documents", [])
         except Exception as e:
@@ -52,3 +58,12 @@ class AppwriteFunction:
         except Exception as e:
             print("Error setting topic:", e)
             return None
+        
+# if __name__ == "__main__":
+#     appwrite_instance = AppwriteFunction()
+
+#     # Set a new topic
+#     new_topic = {"name": "AI", "content": "Artificial Intelligence discussion", "podcasturl":"www.google.com"}
+#     topic_response = appwrite_instance.setTopic(new_topic)
+#     print("Set Topic Response:", topic_response)
+
