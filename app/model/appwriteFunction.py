@@ -40,7 +40,7 @@ class AppwriteFunction:
             print("Error storing PDF:", e)
             return None
 
-    def setTopics(self, topic_data):
+    def setTopic(self, topic_data):
         try:
             response = self.databases.create_document(
                 appwriteDatabaseId,
