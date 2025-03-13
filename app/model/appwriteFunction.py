@@ -1,25 +1,23 @@
 import os
 import sys
 
-# Append the parent directory to sys path for module resolution
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 
-# Import Appwrite SDK
 import appwrite
 from app.config.config import (
     appwriteBucketId,
     appwriteCollectionId,
     appwriteDatabaseId,
-    appwriteProjectId
+    appwriteProjectId,
+    appwriteSecretKey
 )
 
 class AppwriteFunction:
     def __init__(self):
         self.client = appwrite.Client()
-        self.client.set_endpoint("https://cloud.appwrite.io/v1")  # Update if needed
+        self.client.set_endpoint("https://cloud.appwrite.io/v1")
         self.client.set_project(appwriteProjectId)
-        self.client.set_key("YOUR_SECRET_API_KEY")  # Replace with your Appwrite API key
-
+        self.client.set_key(appwriteSecretKey)  
         self.databases = appwrite.Databases(self.client)
         self.storage = appwrite.Storage(self.client)
 
