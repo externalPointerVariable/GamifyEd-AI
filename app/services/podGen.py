@@ -7,7 +7,6 @@ from vertexai.preview.generative_models import GenerativeModel
 import json
 from app.config.config import cloudProjectId, cloudProjectLocation, playnotesApiKey, playnotesUserId
 from app.utils.podrequests import getPodcastId
-from app.model.fileDump import getFileId
 
 class podGen:
     def __init__(self):
