@@ -21,6 +21,7 @@ class PodGen:
             "AUTHORIZATION": playnotesApiKey,
             "X-USER-ID": playnotesUserId,
             "accept": "application/json",
+            'Content-Type': 'application/json'
         }
 
         self.data = {
@@ -51,7 +52,8 @@ class PodGen:
     def generatePodcastContent(self):
         try:
             if self.appwriteFunction.getTopic(self.topic):
-                return {"content": "", "audioUrl": ""}
+                print("This topic alreay exits")
+                return self.appwriteFunction.getTopic(self.topic)
             else:
                 content = self.generateContent()
 
