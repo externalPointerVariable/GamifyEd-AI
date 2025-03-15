@@ -51,7 +51,6 @@ class PodGen:
     def generatePodcastContent(self):
         try:
             if self.appwriteFunction.getTopic(self.topic):
-                print("This topic alreay exits")
                 return self.appwriteFunction.getTopic(self.topic)
             else:
                 content = self.generateContent()
