@@ -23,15 +23,14 @@ class PodGen:
             "accept": "application/json",
             'Content-Type': 'application/json'
         }
-
         self.data = {
-            "sourceFileUrl": "",
-            "synthesisStyle": "podcast",
-            "voice1": "s3://voice-cloning-zero-shot/65977f5e-a22a-4b36-861b-ecede19bdd65/original/manifest.json",
-            "voice1Name": "Arsenio",
-            "voice2": "s3://voice-cloning-zero-shot/831bd330-85c6-4333-b2b4-10c476ea3491/original/manifest.json",
-            "voice2Name": "Nia",
-        }
+            'sourceFileUrl': (None, ""),
+            'synthesisStyle': (None, 'podcast'),
+            'voice1': (None, 's3://voice-cloning-zero-shot/65977f5e-a22a-4b36-861b-ecede19bdd65/original/manifest.json'),
+            'voice1Name': (None, 'Arsenio'),
+            'voice2': (None, 's3://voice-cloning-zero-shot/831bd330-85c6-4333-b2b4-10c476ea3491/original/manifest.json'),
+            'voice2Name': (None, 'Nia'),
+            }
 
     def generateContent(self):
         try:
