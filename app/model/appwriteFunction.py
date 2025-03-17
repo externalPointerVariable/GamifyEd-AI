@@ -7,6 +7,9 @@ from appwrite.client import Client
 from appwrite.services.databases import Databases
 from appwrite.services.storage import Storage
 from appwrite.query import Query
+from appwrite.input_file import InputFile
+from appwrite.permission import Permission
+from appwrite.role import Role
 
 
 
@@ -40,11 +43,16 @@ class AppwriteFunction:
 
     def storePDFs(self, file_path):
         try:
-            response = self.storage.create_file(appwriteBucketId, "unique()", open(file_path, "rb"))
-            return response
+            file = InputFile.from_path(file_path)
+            permissions = [Permission.read(Role.any())]
+
+            response = self.storage.create_file(appwriteBucketId, "unique()", file, permissions=permissions)
+            pdfUrl = f"https://cloud.appwrite.io/v1/storage/buckets/{appwriteBucketId}/files/{response['$id']}/view?project={appwriteProjectId}"
+            return pdfUrl
         except Exception as e:
             print("Error storing PDF:", e)
             return None
+
 
     def setTopic(self, topic_data):
         try:

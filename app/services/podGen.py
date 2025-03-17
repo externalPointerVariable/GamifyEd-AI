@@ -4,9 +4,8 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')
 
 import vertexai
 from vertexai.preview.generative_models import GenerativeModel
-import json
-from app.config.config import cloudProjectId, cloudProjectLocation, playnotesApiKey, playnotesUserId
-from app.utils.podrequests import getPodcastId
+from app.config.config import cloudProjectId, cloudProjectLocation
+from app.utils.podrequests import PodcastRequest
 from app.model.appwriteFunction import AppwriteFunction
 
 class PodGen:
@@ -17,20 +16,6 @@ class PodGen:
         self.model = GenerativeModel("gemini-pro")
         self.genConfig = {"temperature": 0.8}
 
-        self.header = {
-            "AUTHORIZATION": playnotesApiKey,
-            "X-USER-ID": playnotesUserId,
-            "accept": "application/json",
-            'Content-Type': 'application/json'
-        }
-        self.data = {
-            'sourceFileUrl': (None, ""),
-            'synthesisStyle': (None, 'podcast'),
-            'voice1': (None, 's3://voice-cloning-zero-shot/65977f5e-a22a-4b36-861b-ecede19bdd65/original/manifest.json'),
-            'voice1Name': (None, 'Arsenio'),
-            'voice2': (None, 's3://voice-cloning-zero-shot/831bd330-85c6-4333-b2b4-10c476ea3491/original/manifest.json'),
-            'voice2Name': (None, 'Nia'),
-            }
 
     def generateContent(self):
         try:
@@ -54,26 +39,15 @@ class PodGen:
                 return self.appwriteFunction.getTopic(self.topic)
             else:
                 content = self.generateContent()
+                
+                file_path = f"{self.topic}.pdf"
 
-                file_path = "generated_content.pdf" 
-                with open(file_path, "w", encoding="utf-8") as file:
-                    file.write(content)
+                with open(file_path, "wb") as file:
+                    file.write(content.encode("utf-8"))
 
                 pdfUrl = self.appwriteFunction.storePDFs(file_path)
-
                 os.remove(file_path)
-
-                self.data["sourceFileUrl"] = pdfUrl
-                audioUrl = getPodcastId(self.header, self.data)
-
-                newTopic = {
-                    "name": self.topic,
-                    "content": content,
-                    "podcasturl": audioUrl,
-                }
-                self.appwriteFunction.setTopic(newTopic)
-
-                return {"content": content, "audioUrl": audioUrl}
+                return pdfUrl
         except Exception as e:
             return str(e)
 
