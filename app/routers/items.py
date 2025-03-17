@@ -1,8 +1,10 @@
 import os
 import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
-from fastapi import APIRouter
+from fastapi import APIRouter, Header
 from app.services.quizGen import quizGen
+from typing import Annotated
+from app.model.quizModel import StudentQuiz, TeacherQuiz
 
 
 router = APIRouter()
@@ -16,7 +18,8 @@ def homeurl():
 def listAPI():
     return {"Message":"This router provides you with the acces to use the api"}
 
-@router.post("/api/student/quiz/{academiclevel}")
-def generateStudentQuiz(academiclevel: str, topics: list[str]):
-    quiz.topics = topics
-    return quiz.generatePracticeQuiz(academiclevel)
+@router.post("/api/quiz/student")
+def generateStudentQuiz(header:Annotated[StudentQuiz, Header()]):
+    quiz.topics = header.topics
+    response = quiz.generatePracticeQuiz(header.academicLevel)
+    return response
