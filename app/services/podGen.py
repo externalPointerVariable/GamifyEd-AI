@@ -41,6 +41,11 @@ class PodGen:
                         The transcript should be in the following format:
                         Host 1: Line from Host 1
                         Host 2: Line from Host 2
+                        Note:
+                        1. Exclude Intro and Outro Music
+                        2. Name of the Podcast is GamifyEd Podcasts
+                        3. Host 1 : John
+                        4. Host 2: Nina
                     """
             response = self.model.generate_content(prompt, generation_config=self.genConfig)
             return response.text.strip()
@@ -79,7 +84,7 @@ class PodGen:
             return str(e)
 
 
-# if __name__ == "__main__":
-#     pod = PodGen()
-#     pod.topic = "Computer Vision"
-#     print(pod.generatePodcastContent())
+if __name__ == "__main__":
+    pod = PodGen()
+    pod.topic = "Soft Computing"
+    print(pod.generatePodcastContent())
