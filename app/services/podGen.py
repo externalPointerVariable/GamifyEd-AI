@@ -39,13 +39,8 @@ class PodGen:
                         Generate a transscript for 4 to 5 minutes long podcast based on the following content:
                         Content:{content}
                         The transcript should be in the following format:
-                        Host 1: Line from Host 1
-                        Host 2: Line from Host 2
-                        Note:
-                        1. Exclude Intro and Outro Music
-                        2. Name of the Podcast is GamifyEd Podcasts
-                        3. Host 1 : John
-                        4. Host 2: Nina
+                        Host 1: Welcome to GamifyEd Podcasts! Today, we're diving into {self.topic}.  
+                        Host 2: Absolutely, John! ...  
                     """
             response = self.model.generate_content(prompt, generation_config=self.genConfig)
             return response.text.strip()
@@ -71,6 +66,7 @@ class PodGen:
                 content = self.generateContent()
                 transcript = self.generateTranscript(content)
                 transcript = self.removeMarkdown(transcript)
+                print(transcript)
                 pod = PodcastRequest(transcript)
                 audioUrl = pod.get_audio_url()
                 newTopic = {
@@ -84,7 +80,7 @@ class PodGen:
             return str(e)
 
 
-if __name__ == "__main__":
-    pod = PodGen()
-    pod.topic = "Soft Computing"
-    print(pod.generatePodcastContent())
+# if __name__ == "__main__":
+#     pod = PodGen()
+#     pod.topic = "Quantum Computing"
+#     print(pod.generatePodcastContent())

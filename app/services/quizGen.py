@@ -20,7 +20,7 @@ class quizGen:
     def generatePracticeQuiz(self, academicLevel):
         try:
             prompt = f'''
-                    Generate a multiple-choice quiz on the following topics: {self.topics}.  
+                    Generate 30 multiple-choice quiz on the following topics: {self.topics}.  
                     Each question should be assigned one of the following difficulty levels: {self.difficulties}.  
                     The quiz should be suitable for an {academicLevel} student.
                     Each question should be structured in the following JSON format:
@@ -43,7 +43,7 @@ class quizGen:
     def generateTestQuiz(self, assignDifficulty, academicLevel):
         try:
             prompt =f'''
-                    Generate a multiple-choice quiz on the following topics: {self.topics}.  
+                    Generate 30 multiple-choice quiz on the following topics: {self.topics}.  
                     Questions should be generated with assigned difficulty {assignDifficulty}.  
                     The quiz should be suitable for an {academicLevel} student.
                     Each question should be structured in the following JSON format:
