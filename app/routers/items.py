@@ -5,10 +5,13 @@ from fastapi import APIRouter, Header
 from app.services.quizGen import quizGen
 from typing import Annotated
 from app.model.quizModel import StudentQuiz, TeacherQuiz
+from app.model.podcastModel import GeneratePodcast
+from app.services.podGen import PodGen
 
 
 router = APIRouter()
 quiz = quizGen()
+podRequest = PodGen()
 
 @router.get("/")
 def homeurl():
@@ -28,4 +31,10 @@ def generateStudentQuiz(header:Annotated[StudentQuiz, Header()]):
 def generateTeacherQuiz(header:Annotated[TeacherQuiz, Header()]):
     quiz.topics = header.topics
     response = quiz.generateTestQuiz(header.difficulty, header.academicLevel)
+    return response
+
+@router.post("/api/student/podcast")
+def genratePodcast(header:Annotated[GeneratePodcast, Header()]):
+    podRequest.topic = header.topic
+    response = podRequest.generatePodcastContent()
     return response
