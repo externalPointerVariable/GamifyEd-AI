@@ -79,7 +79,7 @@ class PodGen:
             return str(e)
 
 
-if __name__ == "__main__":
-    pod = PodGen()
-    pod.topic = "Computer Vision"
-    print(pod.generatePodcastContent())
+# if __name__ == "__main__":
+#     pod = PodGen()
+#     pod.topic = "Computer Vision"
+#     print(pod.generatePodcastContent())
