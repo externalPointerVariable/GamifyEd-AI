@@ -80,15 +80,15 @@ class PodcastRequest:
                 return f"⚠️ Exception in get_audio_url: {e}"
 
 
-if __name__ == '__main__':
-    # Sample podcast transcript
-    transcript = """
-    Host 1: Welcome to The Tech Tomorrow Podcast! Today we're diving into the fascinating world of voice AI and what the future holds.
-    Host 2: And what a topic this is. The technology has come so far from those early days of basic voice commands.
-    Host 1: Remember when we thought it was revolutionary just to ask our phones to set a timer?
-    Host 2: Now we're having full conversations with AI that can understand context, emotion, and even cultural nuances. It's incredible.
-    """
+# if __name__ == '__main__':
+#     # Sample podcast transcript
+#     transcript = """
+#     Host 1: Welcome to The Tech Tomorrow Podcast! Today we're diving into the fascinating world of voice AI and what the future holds.
+#     Host 2: And what a topic this is. The technology has come so far from those early days of basic voice commands.
+#     Host 1: Remember when we thought it was revolutionary just to ask our phones to set a timer?
+#     Host 2: Now we're having full conversations with AI that can understand context, emotion, and even cultural nuances. It's incredible.
+#     """
 
-    pod = PodcastRequest(transcript)
-    audio_url = pod.get_audio_url()
-    print(audio_url)
+#     pod = PodcastRequest(transcript)
+#     audio_url = pod.get_audio_url()
+#     print(audio_url)
