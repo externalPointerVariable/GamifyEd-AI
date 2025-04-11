@@ -4,3 +4,4 @@ appwrite==7.1.0
 google-api-core==2.24.1
 uvicorn==0.34.0
 gunicorn==23.0.0
+google-cloud-aiplatform==1.82.0
