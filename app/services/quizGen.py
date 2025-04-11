@@ -11,6 +11,7 @@ class quizGen:
     def __init__(self):
         self.client = vertexai.init(project=cloudProjectId, location=cloudProjectLocation)
         self.topics = []
+        self.numberOfQuestions = 30
         self.difficulties = ['Easy', 'Medium', 'Hard']
         self.model = GenerativeModel('gemini-pro')
         self.genConfig = {
@@ -20,7 +21,7 @@ class quizGen:
     def generatePracticeQuiz(self, academicLevel):
         try:
             prompt = f'''
-                    Generate 30 multiple-choice quiz on the following topics: {self.topics}.  
+                    Generate {self.numberOfQuestions} multiple-choice quiz on the following topics: {self.topics}.  
                     Each question should be assigned one of the following difficulty levels: {self.difficulties}.  
                     The quiz should be suitable for an {academicLevel} student.
                     Each question should be structured in the following JSON format:
@@ -43,7 +44,7 @@ class quizGen:
     def generateTestQuiz(self, assignDifficulty, academicLevel):
         try:
             prompt =f'''
-                    Generate 30 multiple-choice quiz on the following topics: {self.topics}.  
+                    Generate {self.numberOfQuestions} multiple-choice quiz on the following topics: {self.topics}.  
                     Questions should be generated with assigned difficulty {assignDifficulty}.  
                     The quiz should be suitable for an {academicLevel} student.
                     Each question should be structured in the following JSON format:
