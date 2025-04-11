@@ -24,12 +24,14 @@ def listAPI():
 @router.post("/api/quiz/student")
 def generateStudentQuiz(header:Annotated[StudentQuiz, Header()]):
     quiz.topics = header.topics
+    quiz.numberOfQuestions = header.numberOfQuestions
     response = quiz.generatePracticeQuiz(header.academicLevel)
     return response
 
 @router.post("/api/quiz/teacher")
 def generateTeacherQuiz(header:Annotated[TeacherQuiz, Header()]):
     quiz.topics = header.topics
+    quiz.numberOfQuestions = header.numberOfQuestions
     response = quiz.generateTestQuiz(header.difficulty, header.academicLevel)
     return response
 
