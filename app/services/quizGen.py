@@ -35,9 +35,21 @@ class quizGen:
                         }}
                     ]
                     '''
+            
+            # Generate the quiz using the model
             response = self.model.generate_content(prompt, generation_config=self.genConfig)
-            response = response.text.strip()
-            return json.dumps(response)
+            response = response.text.strip()  # Remove unnecessary whitespace
+
+            # Ensure the response doesn't have backticks or unwanted characters
+            cleaned_response = response.replace('`', '').strip()
+
+            # Parse the cleaned response into JSON
+            try:
+                quiz_data = json.loads(cleaned_response)
+                return quiz_data  # Return the cleaned JSON data as a Python object
+            except json.JSONDecodeError as e:
+                return f"Error parsing JSON: {e}"
+
         except Exception as e:
             return str(e)
     
