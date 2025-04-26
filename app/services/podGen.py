@@ -2,20 +2,49 @@ import os
 import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 import re
-import vertexai
-from vertexai.preview.generative_models import GenerativeModel
-from app.config.config import cloudProjectId, cloudProjectLocation
+from google import genai
+from google.genai import types
 from app.utils.podrequests import PodcastRequest
 from app.model.appwriteFunction import AppwriteFunction
+from app.config.config import googleStudioApiKey
 
 class PodGen:
     def __init__(self):
-        vertexai.init(project=cloudProjectId, location=cloudProjectLocation)
+        self.client = genai.Client(api_key=googleStudioApiKey)
         self.appwriteFunction = AppwriteFunction()
         self.topic = ""
-        self.model = GenerativeModel("gemini-pro")
-        self.genConfig = {"temperature": 0.8}
+        self.model = "gemini-1.5-pro"
+        self.temperature = 0.8
 
+    def _generate(self, prompt):
+            contents = [
+                types.Content(
+                    role="user",
+                    parts=[types.Part.from_text(text=prompt)],
+                )
+            ]
+
+            config = types.GenerateContentConfig(
+                temperature=self.temperature,
+                response_mime_type="text/plain"
+            )
+
+            try:
+                full_response = ""
+                for chunk in self.client.models.generate_content_stream(
+                    model=self.model,
+                    contents=contents,
+                    config=config
+                ):
+                    full_response += chunk.text or ""
+
+                cleaned_response = full_response.strip().replace("```json", "").replace("```", "").replace("`", "")
+                if not cleaned_response:
+                    return "Error: Received empty response from Gemini API."
+
+                return cleaned_response
+            except Exception as e:
+                return str(e)
 
     def generateContent(self):
         try:
@@ -28,8 +57,10 @@ class PodGen:
                 - Content
                 - Conclusion
             """
-            response = self.model.generate_content(prompt, generation_config=self.genConfig)
-            return response.text.strip()
+            response = self._generate(prompt)
+            if not response:
+                return "Error: Received empty response from Gemini API."
+            return response
         except Exception as e:
             return str(e)
         
@@ -42,8 +73,10 @@ class PodGen:
                         Host 1: Welcome to GamifyEd Podcasts! Today, we're diving into {self.topic}.  
                         Host 2: Absolutely, John! ...  
                     """
-            response = self.model.generate_content(prompt, generation_config=self.genConfig)
-            return response.text.strip()
+            response = self._generate(prompt)
+            if not response:
+                return "Error: Received empty response from Gemini API."
+            return response
         except Exception as e:
             return str(e)
         
@@ -80,7 +113,7 @@ class PodGen:
             return str(e)
 
 
-# if __name__ == "__main__":
-#     pod = PodGen()
-#     pod.topic = "Quantum Computing"
-#     print(pod.generatePodcastContent())
+if __name__ == "__main__":
+    pod = PodGen()
+    pod.topic = "Hard Computing"
+    print(pod.generatePodcastContent())
