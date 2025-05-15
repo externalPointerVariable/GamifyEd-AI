@@ -13,7 +13,7 @@ class quizGen:
         self.topics = []
         self.numberOfQuestions = 10
         self.difficulties = ['Easy', 'Medium', 'Hard']
-        self.model_name = "gemini-1.5-pro"
+        self.model_name = "gemini-2.0-flash"
         self.temperature = 0.8
 
     def _format_prompt(self, assignDifficulty=None, academicLevel="high school"):
@@ -67,6 +67,7 @@ class quizGen:
     def generatePracticeQuiz(self, academicLevel):
         prompt = self._format_prompt(academicLevel=academicLevel)
         response = self._generate(prompt)
+        print(f"Response: {response}")
         try:
             return json.loads(response)
         except json.JSONDecodeError as e:
